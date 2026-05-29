@@ -1,15 +1,45 @@
-from strategy import FakeCoinSolver
-from visualization import visualize_tree
+from visualization import save_tree
+
+from task12 import build_tree_12
+from task39 import build_tree_39
+from task27 import build_tree_27
+
 
 def main():
-    solver = FakeCoinSolver(12)
 
-    result = solver.solve()
+    tree12 = build_tree_12()
 
-    print("Результат:")
-    print(result)
+    save_tree(
+        tree12,
+        "trees/tree_12"
+    )
 
-    visualize_tree(solver.tree)
+    print(
+        "tree_12.png created"
+    )
+
+    tree39 = build_tree_39()
+
+    save_tree(
+        tree39,
+        "trees/tree_39"
+    )
+
+    print(
+        "tree_39.png created"
+    )
+
+    tree27 = build_tree_27()
+
+    save_tree(
+        tree27,
+        "trees/tree_27"
+    )
+
+    print(
+        "tree_27.png created"
+    )
+
 
 if __name__ == "__main__":
     main()

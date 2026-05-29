@@ -1,36 +1,64 @@
-import matplotlib.pyplot as plt
-import networkx as nx
+from graphviz import Digraph
 
 
-def add_nodes(graph, node, parent=None):
+def node_color(label):
 
-    graph.add_node(node.label)
+    if "FOUND" in label:
+        return "#77DD77"
 
-    if parent:
-        graph.add_edge(parent.label, node.label)
+    if "vs" in label:
+        return "#F8BBD0"
 
-    for child in node.children.values():
-        add_nodes(graph, child, node)
+    if "states" in label:
+        return "#C8E6C9"
+
+    return "#FFFFFF"
 
 
-def visualize_tree(root):
+class Node:
 
-    graph = nx.DiGraph()
+    def __init__(self, label):
 
-    add_nodes(graph, root)
+        self.label = label
+        self.children = {}
 
-    plt.figure(figsize=(12, 8))
+    def add(self, edge, node):
 
-    pos = nx.spring_layout(graph, seed=42)
+        self.children[edge] = node
 
-    nx.draw(
-        graph,
-        pos,
-        with_labels=True,
-        node_size=3000,
-        node_color="lightblue",
-        font_size=8
+
+def build_graph(graph, node):
+
+    graph.node(
+        str(id(node)),
+        node.label,
+        style="filled",
+        fillcolor=node_color(node.label),
+        shape="ellipse"
     )
 
-    plt.title("Дерево решений")
-    plt.show()
+    for edge, child in node.children.items():
+
+        graph.edge(
+            str(id(node)),
+            str(id(child)),
+            label=edge
+        )
+
+        build_graph(graph, child)
+
+
+def save_tree(root, filename):
+
+    graph = Digraph(
+        format="png"
+    )
+
+    graph.attr(rankdir="TB")
+
+    build_graph(graph, root)
+
+    graph.render(
+        filename,
+        cleanup=True
+    )
