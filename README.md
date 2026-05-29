@@ -103,6 +103,7 @@ fake_coin_problem/
 ├── main.py
 ├── scales.py
 ├── visualization.py
+├── animation_demo.py
 │
 ├── task12.py
 ├── task39.py
